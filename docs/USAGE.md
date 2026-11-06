@@ -23,12 +23,26 @@
 
 ## 已有项目合并
 
-1. 记录当前差异和已有入口、索引及实际事实 owner。
-2. 在独立空目录生成模板。工具返回冲突时不做覆盖；不要把冲突当作要求重建项目。
-3. 把 `.monax-workflow` 规则/模板快照带入目标；现存同名快照先比较，不静默替换。
-4. 在原 AGENTS.md 加入包标记 `<!-- monax-open-workflow:v1 -->` 和 `.monax-workflow/rules/context.md`、`PROJECT_CONTEXT/README.md` 的发现指针，保留原要求。
-5. 合并事实索引，激活表 `project_owners` 可指向已有 PROJECT_CONTEXT 下 Markdown owner；不要制造重复事实来源。
-6. 审查 blocker 与待填写事实后执行 `check --require-ready`。未知事实保持未就绪，而不是删掉 TODO 伪装完成。
+先看预览结果的 `conflicts` 列表。下面用最常见的情况举例：你的项目已有一份写着团队约定的 `AGENTS.md`，其余目标文件都不存在。
+
+1. 在 MonaX 工具目录打开终端。选一个全新的临时目录，生成一套**空白**接入文件：
+
+   ```sh
+   mkdir ../monax-merge-template
+   python -B plugins/monax-open-workflow/scripts/project.py init --project-root "../monax-merge-template" --apply
+   ```
+
+2. 在文件管理器里并排打开 `monax-merge-template` 和你的项目根目录。将临时目录里的 **`.monax-workflow` 和 `PROJECT_CONTEXT` 两个目录**复制到项目根目录。必要时打开“显示隐藏文件”，确保点号开头的目录也复制到了。如果目标已经有其中之一，请走下方的逐文件合并。
+3. 用文本编辑器打开两份 `AGENTS.md`。把**临时模板里的入口文字（包括第一行 HTML 注释）追加**到项目原文件，保留团队写下的约定。注释、规则路径和项目索引路径都要保留；初始化工具用它们辨认入口。
+4. 打开自己的项目，按[首页的项目接入说明](../README.md#用到自己的项目)填写事实。在工具目录运行 `python -B plugins/monax-open-workflow/scripts/project.py check --project-root "../我的项目" --require-ready`，将示例路径换成实际项目路径。
+
+**多个文件冲突时**，根据预览列出的路径逐个比较。下面的做法也适用于目标目录里已经有其他项目文件的情况。
+
+| 已有内容 | 怎样合并 |
+| --- | --- |
+| `PROJECT_CONTEXT/README.md` 或事实文档 | 保留现有事实和索引，为缺少的职责添加模板文件与相对链接。若继续沿用已有 Markdown 文件名，将激活表 `project_owners` 中对应路径改为该文件，并从索引链接过去。 |
+| `workflow_activation_profile.json` | 先核对原文件用途。只有与本包格式兼容时才合并规则列表、事实路径和仍未解决的事项；如果另一个工作流也把这个文件作为专用配置，请先在项目副本中验证兼容性。 |
+| `.monax-workflow` 快照或 marker | 先运行 `check`。已接入的项目走升级步骤；有版本或内容差异时保留现有定制，逐项审阅后再采用。 |
 
 初始化默认 dry-run，`--apply` 只创建本次清单中的文件。采用独占创建保护已有写入；运行中失败保留并列出残留，不自动回滚删除。路径含符号链接或 junction 时拒绝。它不是对抗恶意并发改目录的操作系统沙箱。
 

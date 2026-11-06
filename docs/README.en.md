@@ -10,20 +10,42 @@ Try whichever example feels familiar.
 
 The examples and detailed guides are in Chinese. You can read them first, or try the local setup below with Python 3.10 or later.
 
-## Try without a plugin
+## Get a local copy
 
-From the package root, create a disposable project and run:
+Clone the repository and open a terminal in the cloned folder, or use **Code → Download ZIP** on GitHub and open the extracted folder that contains both `README.md` and `plugins`.
+
+```sh
+git clone https://github.com/MonaJTX/monax-open-workflow.git
+cd monax-open-workflow
+python3 --version
+```
+
+Use Python 3.10 or later. On Windows use `python` or `py -3` in place of `python3`. Keep the terminal in the workflow folder. Open the **target project folder** in your file-capable assistant.
+
+## Try it with a reading list
 
 ```sh
 mkdir demo-project
-python3 -B plugins/monax-open-workflow/scripts/project.py init --project-root ./demo-project
-python3 -B plugins/monax-open-workflow/scripts/project.py init --project-root ./demo-project --apply
-python3 -B plugins/monax-open-workflow/scripts/project.py check --project-root ./demo-project
+python3 -B plugins/monax-open-workflow/scripts/project.py init --project-root "./demo-project"
+python3 -B plugins/monax-open-workflow/scripts/project.py init --project-root "./demo-project" --apply
+python3 -B plugins/monax-open-workflow/scripts/project.py check --project-root "./demo-project"
 ```
 
-On Windows use `python`. Python 3.10+ and its standard library are sufficient. Initialization is dry-run by default and refuses existing destination files. `NeedsProjectFacts` is expected until you supply verified project facts. No command installs a plugin or uploads data.
+Expect `Planned`, `Created`, then `NeedsProjectFacts`. Copy [the fictional brief](../examples/general/project-brief.md) into `demo-project` and open that folder in your assistant. Ask:
 
-Open the new project in a file-capable assistant and ask it to read AGENTS.md, verify the project facts and follow only the relevant workflow. Static mode depends on your host loading those instructions. Optional Codex installation is described in the [main README](../README.md).
+> Read AGENTS.md and project-brief.md. Fill in the project identity, phase, constraints and decisions in the files linked from PROJECT_CONTEXT/README.md. Resolve the corresponding placeholders and remove the resolved item from blocking_items in workflow_activation_profile.json after checking the facts.
+
+Run `python3 -B plugins/monax-open-workflow/scripts/project.py check --project-root "./demo-project" --require-ready`. Once it reports `Ready`, start a fresh chat in the same project and ask “How should search and the unread filter work together? Which project file records the decision?” Look for title-only matching, unread items only, and newest additions first.
+
+## Bring it to your own project
+
+From the workflow folder, replace `"../my-project"` with the path to your existing project:
+
+```sh
+python3 -B plugins/monax-open-workflow/scripts/project.py init --project-root "../my-project"
+```
+
+On `Planned`, review the list and repeat with `--apply`. On `Conflict`, keep your current files and follow the [merge walkthrough](USAGE.md#已有项目合并). For a project already using MonaX, run `check` directly. Open your project in your assistant, ask it to fill the indexed files using your own project facts, and check again with `--require-ready`. The `pending` and `issues` fields identify anything that still needs attention.
 
 ## Explore
 

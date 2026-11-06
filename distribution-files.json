@@ -23,6 +23,7 @@
     "examples/game/README.md",
     "examples/game/reward_demo.py",
     "examples/general/README.md",
+    "examples/general/project-brief.md",
     "plugins/monax-open-workflow/.codex-plugin/plugin.json",
     "plugins/monax-open-workflow/hooks/context.py",
     "plugins/monax-open-workflow/hooks/hooks.json",

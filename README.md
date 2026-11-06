@@ -12,51 +12,72 @@
 
 [English overview](docs/README.en.md) · [按任务找方法](plugins/monax-open-workflow/rules/context.md) · [验证记录](VALIDATION.md) · [MIT 许可证](LICENSE)
 
-## 十分钟本地试用：无需安装插件
+## 第一次用，从 GitHub 到本地
 
-在本包根目录打开终端。以下命令只操作你新建的 `demo-project`，不会安装插件、联网或上传素材。
+在准备存放工具的目录打开终端，运行：
 
-```powershell
+```sh
+git clone https://github.com/MonaJTX/monax-open-workflow.git
+cd monax-open-workflow
+python --version
+```
+
+也可以在 GitHub 点 **Code → Download ZIP**，解压后在能同时看见 `README.md` 和 `plugins` 的那一层打开终端。确认 Python 版本至少为 3.10。macOS/Linux 通常把以下命令里的 `python` 写成 `python3`，Windows 如果只有 `py`，可以用 `py -3`。
+
+接下来的**终端命令都在下载的 MonaX 目录运行**。参数 `--project-root` 指向你想接入的项目。跟 AI 聊天时则打开那个项目，让它能读到项目自己的文件。
+
+## 先体验一次「换聊天接着做」
+
+**1. 建一个练习项目。** 第一次试用请选一个尚不存在的 `demo-project` 目录。运行下面四行：
+
+```sh
 mkdir demo-project
-python -B plugins/monax-open-workflow/scripts/project.py init --project-root ./demo-project
-python -B plugins/monax-open-workflow/scripts/project.py init --project-root ./demo-project --apply
-python -B plugins/monax-open-workflow/scripts/project.py check --project-root ./demo-project
+python -B plugins/monax-open-workflow/scripts/project.py init --project-root "./demo-project"
+python -B plugins/monax-open-workflow/scripts/project.py init --project-root "./demo-project" --apply
+python -B plugins/monax-open-workflow/scripts/project.py check --project-root "./demo-project"
 ```
 
-macOS/Linux 使用 `python3`。第一条 `init` 命令列出将创建的文件，加上 `--apply` 后才写入。第一次检查看到 **NeedsProjectFacts** 是正常的。接下来把你自己的项目目标和约束填进去。
+两次 `init` 的结果依次是 `Planned`（预览）和 `Created`（写入）。检查会显示 `NeedsProjectFacts`，并在 `pending` 里列出需要填写的文件。此时工具已经准备好，接下来给练习项目一点背景。
 
-在支持读取文件的 AI 工具中打开 `demo-project`，发送：
+**2. 让 AI 认识这个项目。** 用文件管理器把 [阅读清单练习说明](examples/general/project-brief.md) 复制进刚建好的 `demo-project`，保留文件名 `project-brief.md`。在能读写本地文件的 AI 工具里打开 **demo-project**，发送：
 
-> 读取本项目 AGENTS.md。帮我整理当前项目的目标、阶段和约束；从已有文件核验，缺少的事实问我，不要把示例当事实。填写 PROJECT_CONTEXT，保持现有文件与任务范围。
+> 请读 AGENTS.md 和 project-brief.md。根据练习说明，把项目目标、当前进度、技术约束和已经商量好的决定分别写到 PROJECT_CONTEXT 索引指向的文件，替换对应的 TODO。核对完身份、阶段和约束后，在 workflow_activation_profile.json 的 blocking_items 中移除这一条已解决的提醒。只整理项目说明。
 
-对于纯演示，可参照 [通用项目示例](examples/general/README.md) 使用明确标注的虚构事实。真实项目必须使用自己的事实。解决后更新激活表 `blocking_items`，再运行：
-
-```powershell
-python -B plugins/monax-open-workflow/scripts/project.py check --project-root ./demo-project --require-ready
+回到之前的终端运行：
+```sh
+python -B plugins/monax-open-workflow/scripts/project.py check --project-root "./demo-project" --require-ready
 ```
 
-**Ready 只表示入口、规则快照和项目事实占位检查通过。** 不表示实现正确、插件生效、视频质量达标或用户已验收。
+看到 `Ready` 表示项目说明已就位。仍是 `NeedsProjectFacts` 时，按 `pending` 里的文件名补齐事实；如果是 `Blocked`，先看 `issues` 指出的文件或入口。
 
-工具复制 `.monax-workflow/rules`、`.monax-workflow/templates` 和项目入口/事实骨架。接入后的静态规则无需依赖本包原位置；视频模板也随项目复制。
+**3. 在同一个 demo-project 打开新聊天。** 这次只问：
 
-## 接入已有项目
+> 阅读清单里，搜索和「未读」筛选一起用，结果该怎么排？请告诉我依据哪份项目文件。
 
-把 `--project-root` 换成自己的项目路径，先运行不带 `--apply` 的预览。任何目标文件已存在时返回 Conflict，整批不写入；它不会覆盖现有 AGENTS.md、事实或定制规则。
+看回答是否同时保留三条约定：只匹配标题、只显示未读条目、仍按加入时间倒序。答案还应能指到保存这些决定的项目文件。如果 AI 读不到文件，先检查打开的文件夹；若工具需要手动指定入口，请它先读 `AGENTS.md` 再试。[完整练习](examples/general/README.md)
 
-不要删除旧上下文来强行初始化。在空临时目录生成一份模板，比较后合并入口、marker、规则快照和索引，保留项目原有约束，再执行检查。具体操作见 [接入与升级](docs/USAGE.md)。
+## 用到自己的项目
 
-工具不修改 `.gitignore` 或 Git 索引。团队可选择跟踪脱敏后的入口、规则和项目事实；个人记录是否跟踪由项目决定。不要把凭据写进共享上下文。
+假设你的工具和项目是并排的两个目录 `monax-open-workflow` 和 `我的项目`。在 **monax-open-workflow** 的终端先预览，把引号里的路径换成自己已有的项目目录：
 
-## 正常使用
+```sh
+python -B plugins/monax-open-workflow/scripts/project.py init --project-root "../我的项目"
+```
 
-完成接入后正常提出任务，不必每次说“读取记忆”。静态模式取决于宿主是否加载入口；切换主题后可用实际任务检查发现链。
+- **看到 `Planned`**：看一眼 `planned` 列出的文件。决定接入后，运行同一条命令并在末尾加 `--apply`，预期返回 `Created`。
+- **看到 `Conflict`**：`conflicts` 会列出已有的文件名。保留你的文件，按[已有 AGENTS.md 或项目记录时的合并步骤](docs/USAGE.md#已有项目合并)操作。
+- **已经接入过**：直接运行下面的 `check`，从现有记录接着做。
 
-- “修复领取按钮重复点击导致重复发奖，保留现有奖励规则。”
-- “只读检查当前配置是否真的被运行场景使用。”
-- “为一个虚构短片写两镜头导演卡和三层 Prompt，不生成、不上传。”
-- “记录这次已确认的约束和剩余工作，下次从这里继续。”
+现在在 AI 工具中打开 **你自己的项目**，把下面这句话发给它：
 
-完整练习与预期行为见 [examples](examples/README.md)。示例全部为虚构文本与小型代码，不包含真实项目资产或已生成媒体。
+> 请读 AGENTS.md，结合这个项目的 README、现有文件和我的说明，把目标、当前进度、需要保留的约束填进 PROJECT_CONTEXT。遇到只有我知道的事就问我。核对每一项后，更新 workflow_activation_profile.json 里已解决的 blocking_items。
+
+再在 MonaX 目录检查一次：
+```sh
+python -B plugins/monax-open-workflow/scripts/project.py check --project-root "../我的项目" --require-ready
+```
+
+接下来就可以在项目里正常提需求。软件项目可以问「加这个筛选会影响现有排序吗」；游戏项目可以问「实际场景读取的是哪份配置」；视频项目可以说「只调整第二镜的出口，保留第一镜」。项目说明留在你自己的文件夹，后续聊天可以继续读取。[共享和升级方法](docs/USAGE.md)
 
 ## 可选 Codex 插件
 
