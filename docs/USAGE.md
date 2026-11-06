@@ -34,7 +34,7 @@
 
 2. 在文件管理器里并排打开 `monax-merge-template` 和你的项目根目录。将临时目录里的 **`.monax-workflow` 和 `PROJECT_CONTEXT` 两个目录**复制到项目根目录。必要时打开“显示隐藏文件”，确保点号开头的目录也复制到了。如果目标已经有其中之一，请走下方的逐文件合并。
 3. 用文本编辑器打开两份 `AGENTS.md`。把**临时模板里的入口文字（包括第一行 HTML 注释）追加**到项目原文件，保留团队写下的约定。注释、规则路径和项目索引路径都要保留；初始化工具用它们辨认入口。
-4. 打开自己的项目，按[首页的项目接入说明](../README.md#用到自己的项目)填写事实。在工具目录运行 `python -B plugins/monax-open-workflow/scripts/project.py check --project-root "../我的项目" --require-ready`，将示例路径换成实际项目路径。
+4. 打开自己的项目，按[首页的项目接入说明](../README.zh-CN.md#用到自己的项目)填写事实。在工具目录运行 `python -B plugins/monax-open-workflow/scripts/project.py check --project-root "../我的项目" --require-ready`，将示例路径换成实际项目路径。
 
 **多个文件冲突时**，根据预览列出的路径逐个比较。下面的做法也适用于目标目录里已经有其他项目文件的情况。
 
