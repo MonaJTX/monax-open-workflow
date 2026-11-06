@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "rules": {
+    "MEMORY-READ-01": "context.md",
+    "MEMORY-OWNER-01": "memory.md",
+    "MEMORY-HISTORY-01": "memory.md",
+    "MEMORY-DISTRIBUTION-01": "memory.md",
+    "SCOPE-01": "boundaries.md",
+    "REUSE-01": "development.md",
+    "MINIMAL-01": "development.md",
+    "EVIDENCE-01": "verification.md",
+    "ACCEPTANCE-01": "verification.md"
+  },
+  "conditional_rules": {
+    "DESIGN-01": "design-review.md",
+    "GAME-TRACE-01": "game-development.md",
+    "GAME-CONFIG-01": "game-development.md",
+    "PLATFORM-FACT-01": "game-development.md",
+    "GAME-METHOD-01": "game-methods.md",
+    "VIDEO-PIPELINE-01": "ai-video.md",
+    "VIDEO-DIRECTOR-01": "ai-video-directing.md",
+    "VIDEO-PROMPT-01": "ai-video-prompts.md",
+    "VIDEO-PRODUCTION-01": "ai-video-production.md"
+  }
+}

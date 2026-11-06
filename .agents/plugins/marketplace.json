@@ -1,0 +1,20 @@
+{
+  "name": "monax-open-workflow-local",
+  "interface": {
+    "displayName": "MonaX Open Workflow Local"
+  },
+  "plugins": [
+    {
+      "name": "monax-open-workflow",
+      "source": {
+        "source": "local",
+        "path": "./plugins/monax-open-workflow"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

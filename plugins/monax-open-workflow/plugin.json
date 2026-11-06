@@ -1,0 +1,28 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "monax-open-workflow",
+  "version": "0.1.0",
+  "description": "Portable project memory and workflows for software, games and AI video.",
+  "license": "MIT",
+  "extensions": {
+    "com.openai": {
+      "hooks": "./hooks/hooks.json",
+      "interface": {
+        "displayName": "MonaX Open Workflow",
+        "shortDescription": "Project memory, development, games and AI video workflows.",
+        "longDescription": "Independent local workflow methods, project onboarding and read-only reminders. No hosted service or generation API is bundled.",
+        "developerName": "MonaX",
+        "category": "Productivity",
+        "capabilities": [
+          "Read",
+          "Write"
+        ],
+        "defaultPrompt": [
+          "Use $monax-open-setup to inspect and onboard this project without overwriting existing files.",
+          "Use $monax-open-game to review the actual game configuration and call chain.",
+          "Use $monax-open-video to prepare a fictional storyboard and prompts only."
+        ]
+      }
+    }
+  }
+}
