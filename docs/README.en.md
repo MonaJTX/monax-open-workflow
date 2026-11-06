@@ -1,14 +1,21 @@
 # MonaX Open Workflow
 
-**Pick up yesterday’s work in a fresh chat.** MonaX gives your assistant a place in the project to look up decisions you’ve already made, work you’ve finished, and questions that still need your judgment.
+**MonaX gives your AI assistant a way to carry project decisions into the next task and show you what it actually checked before handing work back.**
 
-Try whichever example feels familiar.
+Say you agreed yesterday that search matches titles only and the newest entries come first. Today you can ask for an “unread” button. The project’s Markdown notes give the assistant both decisions to work from, and a teammate can read the same notes to see why the list behaves that way. [Try the reading list example](../examples/general/README.md)
 
-- You agreed on a reading list’s sort order yesterday. Open a new chat and ask how search and an unread filter should work together. See whether the assistant finds and preserves that decision. [Continue a project](../examples/general/README.md)
-- A player taps the reward button twice. Follow the click to the code that grants the reward, check which setting it reads, and run the example to see the balance. [Trace a game reward](../examples/game/README.md)
-- A paper boat leaves someone’s hand in the first shot. Give the next shot a starting point so it picks up the drifting boat at the right moment. [Connect two video shots](../examples/ai-video/README.md)
+## What you can use it for
 
-The examples and detailed guides are in Chinese. You can read them first, or try the local setup below with Python 3.10 or later.
+| When you want to… | What you get |
+| --- | --- |
+| Resume work or hand it to a teammate | A project record of the decisions in force, where work stopped, and what still needs checking. [Project memory](../plugins/monax-open-workflow/rules/memory.md) |
+| Change an existing application | A workflow for finding code worth reusing, agreeing on the scope, and handing back the change with the checks run and questions still open. [Development workflow](../plugins/monax-open-workflow/rules/development.md) |
+| Find out why a game behaves a certain way | A trace from a player action to the code and configuration that control it. Run the reward example to see the first claim earn three tokens and a second click earn zero. [Run the example](../examples/game/README.md) |
+| Hand a video script to a production partner | A shot-by-shot plan with separate still, storyboard and motion prompts, plus a record of which inputs and reviews are still needed. [Read the two-shot prompt pack](../examples/ai-video/shots.md) · [See its production record](../examples/ai-video/ledger.md) |
+
+The examples and detailed guides are in Chinese. To try the workflow locally, you’ll need a file-capable assistant and Python 3.10 or later.
+
+[Get a local copy](#get-a-local-copy) · [Use your own project](#bring-it-to-your-own-project) · [中文首页](../README.md)
 
 ## Get a local copy
 
